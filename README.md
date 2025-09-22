@@ -1,2 +1,2 @@
 # first-small-cpp-project
-Small program that mimics an online banking website.
+I am currently learning c++ and this program is the result of the knowledge I gathered being applied in practice.
