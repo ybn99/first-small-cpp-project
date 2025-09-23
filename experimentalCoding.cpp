@@ -9,10 +9,11 @@ class Customer {
         std::string fullName;
         std::string email;
         std::string password;
-        double balance = 0.0;
-        double depositAmount = 0;
-        double withdrawAmount = 0;
+        int balance = 0.0;
+        int depositAmount = 0;             
         int age = 0;
+        int withdrawAmount = 0;
+        int result = 0;
 
     public:
 
@@ -26,7 +27,7 @@ class Customer {
         do{
         std::cout << "Your AGE (only 18+): ";
         std::cin >> age;
-        }while (age <= 18);
+        }while (age < 18);
         std::cout << "Your E-MAIL: ";
         std::cin >> email;
         std::cout << "Your NEW PASSWORD: ";
@@ -69,29 +70,52 @@ class Customer {
         }
     }
 
-    void viewWithdrawHistory(bool& isAccountCreated) {
+    
+
+    void getWithdrawAmountFunc(bool& isAccountCreated) {        
         if (!isAccountCreated) {
             notCreatedAccount();
-        } else if (isAccountCreated && withdrawAmount <= 0) {
+        } else if (isAccountCreated && balance > 10){
+            std::cout << "\nHow much would you like to withdraw?: $";
+            std::cin >> withdrawAmount;
+            withdrawFromBalance();
+        } else {
+            std::cout << "\nUnable to withdraw. Balance is too low (min. $10+).";
+        } 
+}
+
+    void viewWithdrawHistory() {
+        if (withdrawHistory.empty()) {
             std::cout << "\nNo withdraws have been made.";
         } else {
-        std::cout << "'\n";
-        for (int withdrawTimes : withdrawHistory) {
+            std::cout << '\n';
+            for (int withdrawTimes : withdrawHistory) {
             std::cout << "Withdrawn: $" << withdrawTimes << '\n';
             }
         }
     }
 
-    void getWithdrawAmount(bool& isAccountCreated) {        // Doulepse epanw se auto to function.
-        if (!isAccountCreated) {
+    void withdrawFromBalance(){
+        if (withdrawAmount > balance) {
+            std::cout << "\nWithdraw is bigger than the balance, no changes made.";
+            withdrawAmount = 0;
+        } else {
+            (result = (balance -= withdrawAmount));
+            withdrawHistory.push_back(withdrawAmount);
+            std::cout << "New balance: $" << result;
+        }
+    }   
+
+    void checkAccessWithdrawHistory(bool& isAccountCreated){
+        if (!isAccountCreated){
             notCreatedAccount();
         } else {
-        std::cout << "\nHow much would you like to withdraw?: $";
-        std::cin >> withdrawAmount;
-        withdrawAmount > balance ? std::cout << "\nUnable to withdraw." :
-        std::cout << "\nNew balance: $" << (balance -= withdrawAmount);
-        withdrawHistory.push_back(withdrawAmount);
+            viewWithdrawHistory();
         }
+    }
+
+    void checkAccessDepositHistory(bool& isAccountCreated){
+
     }
 
     void notCreatedAccount() {
@@ -112,7 +136,7 @@ void showMenu() {       // This function simply shows the menu of actions that t
 };
 
 void handleMenu(int customerChoice, Customer& customer1, bool& isAccountCreated) {     // This function basically handles the user's input and executes accordingly.
-    switch (customer1, customerChoice) {
+    switch (customerChoice) {
         case 1:
             customer1.createAccount(isAccountCreated);
             break;
@@ -124,9 +148,9 @@ void handleMenu(int customerChoice, Customer& customer1, bool& isAccountCreated)
             break;
         case 4: customer1.viewDepositHistory(isAccountCreated);
             break;
-        case 5: customer1.getWithdrawAmount(isAccountCreated);
+        case 5: customer1.getWithdrawAmountFunc(isAccountCreated);
             break;
-        case 6: customer1.viewWithdrawHistory(isAccountCreated);
+        case 6: customer1.checkAccessWithdrawHistory(isAccountCreated);
             break;
         case 0: std::exit(0);
     };
