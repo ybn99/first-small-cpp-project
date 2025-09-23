@@ -35,21 +35,19 @@ class Customer {
         isAccountCreated = true;
     }
 
-    void viewAccount(bool& isAccountCreated) {
-        if (isAccountCreated == true) {
+    void viewAccount(bool& isAccountCreated) {      
+        if (!isAccountCreated) {
+            notCreatedAccount();
+        } else {
             std::cout << "\n=== YOUR ACCOUNT ===";
             std::cout << "\n1. Your FULL NAME: " << Customer::fullName;
             std::cout << "\n2. Your E-MAIL: " << Customer::email;
             std::cout << "\n3. Your BALANCE: $" << Customer::balance;
-        } else {
-            notCreatedAccount();
         }
     }
 
-    void viewDepositHistory(bool& isAccountCreated) {
-        if (!isAccountCreated) {
-            notCreatedAccount();
-        } else if (isAccountCreated && depositAmount <= 0) {
+    void viewDepositHistory() {
+        if (depositAmount <= 0) {
             std::cout << "\nNo deposits have been made.";
         } else {
         std::cout << '\n';
@@ -84,7 +82,7 @@ class Customer {
         } 
 }
 
-    void viewWithdrawHistory() {
+    void viewWithdrawHistory() {        // 
         if (withdrawHistory.empty()) {
             std::cout << "\nNo withdraws have been made.";
         } else {
@@ -95,7 +93,7 @@ class Customer {
         }
     }
 
-    void withdrawFromBalance(){
+    void withdrawFromBalance(){         // Withdraws funds from balance.
         if (withdrawAmount > balance) {
             std::cout << "\nWithdraw is bigger than the balance, no changes made.";
             withdrawAmount = 0;
@@ -106,7 +104,7 @@ class Customer {
         }
     }   
 
-    void checkAccessWithdrawHistory(bool& isAccountCreated){
+    void checkAccessWithdrawHistory(bool& isAccountCreated){        // Checks if the user has created an account and can access the withdraw history function.
         if (!isAccountCreated){
             notCreatedAccount();
         } else {
@@ -114,11 +112,15 @@ class Customer {
         }
     }
 
-    void checkAccessDepositHistory(bool& isAccountCreated){
-
+    void checkAccessDepositHistory(bool& isAccountCreated){         // Checks if the user has created an account and can access the deposit function.
+        if (!isAccountCreated) {
+            notCreatedAccount();
+        } else {
+            viewDepositHistory();
+        }
     }
 
-    void notCreatedAccount() {
+    void notCreatedAccount() {      // Used oftenly for when the customer has not made an account.
         std::cout << "\nYou have not created an account.";
     }
 };
@@ -146,7 +148,7 @@ void handleMenu(int customerChoice, Customer& customer1, bool& isAccountCreated)
         case 3:
             customer1.getDepositAmount(isAccountCreated);
             break;
-        case 4: customer1.viewDepositHistory(isAccountCreated);
+        case 4: customer1.checkAccessDepositHistory(isAccountCreated);
             break;
         case 5: customer1.getWithdrawAmountFunc(isAccountCreated);
             break;
