@@ -35,7 +35,7 @@ class Customer {
         isAccountCreated = true;
     }
 
-    void viewAccount(bool& isAccountCreated) const{      
+    void viewAccount(bool& isAccountCreated) {      
         if (!isAccountCreated) {
             notCreatedAccount();
         } else {
