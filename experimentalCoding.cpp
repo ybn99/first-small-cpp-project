@@ -9,7 +9,7 @@ class Customer {
         std::string fullName;
         std::string email;
         std::string password;
-        int balance = 0.0;
+        double balance = 0.0;
         int depositAmount = 0;             
         int age = 0;
         int withdrawAmount = 0;
@@ -17,7 +17,7 @@ class Customer {
 
     public:
 
-    Customer(std::string& fn, int a, std::string ml, std::string& pass) : fullName(fn), age(a), password(pass), email(ml) {}
+    Customer(std::string& fn, int a, std::string& ml, std::string& pass) : fullName(fn), age(a), password(pass), email(ml) {}
 
     void createAccount(bool& isAccountCreated) {
         std::cout << "\n=== CREATING NEW ACCOUNT ===\n";
@@ -35,7 +35,7 @@ class Customer {
         isAccountCreated = true;
     }
 
-    void viewAccount(bool& isAccountCreated) {      
+    void viewAccount(bool& isAccountCreated) const{      
         if (!isAccountCreated) {
             notCreatedAccount();
         } else {
@@ -46,8 +46,8 @@ class Customer {
         }
     }
 
-    void viewDepositHistory() {
-        if (depositAmount <= 0) {
+    void viewDepositHistory() const{
+        if (depositHistory.empty()) {
             std::cout << "\nNo deposits have been made.";
         } else {
         std::cout << '\n';
@@ -82,7 +82,7 @@ class Customer {
         } 
 }
 
-    void viewWithdrawHistory() {        // 
+    void viewWithdrawHistory() const{        
         if (withdrawHistory.empty()) {
             std::cout << "\nNo withdraws have been made.";
         } else {
@@ -92,8 +92,8 @@ class Customer {
             }
         }
     }
-
-    void withdrawFromBalance(){         // Withdraws funds from balance.
+    // Withdraws funds from balance.
+    void withdrawFromBalance(){         
         if (withdrawAmount > balance) {
             std::cout << "\nWithdraw is bigger than the balance, no changes made.";
             withdrawAmount = 0;
@@ -103,29 +103,30 @@ class Customer {
             std::cout << "New balance: $" << result;
         }
     }   
-
-    void checkAccessWithdrawHistory(bool& isAccountCreated){        // Checks if the user has created an account and can access the withdraw history function.
+    // Checks if the user has created an account and can access the withdraw history function.
+    void checkAccessWithdrawHistory(bool& isAccountCreated){        
         if (!isAccountCreated){
             notCreatedAccount();
         } else {
             viewWithdrawHistory();
         }
     }
-
-    void checkAccessDepositHistory(bool& isAccountCreated){         // Checks if the user has created an account and can access the deposit function.
+    // Checks if the user has created an account and can access the deposit function.
+    void checkAccessDepositHistory(bool& isAccountCreated){         
         if (!isAccountCreated) {
             notCreatedAccount();
         } else {
             viewDepositHistory();
         }
     }
-
-    void notCreatedAccount() {      // Used oftenly for when the customer has not made an account.
+    // Used oftenly for when the customer has not made an account.
+    void notCreatedAccount() {      
         std::cout << "\nYou have not created an account.";
     }
 };
 
-void showMenu() {       // This function simply shows the menu of actions that the user can make
+// This function simply shows the menu of actions that the user can make
+void showMenu() {       
     std::cout << "\n\n=== MAIN MENU ===\n";
     std::cout << "1. Create Account.\n";
     std::cout << "2. View Account.\n";
@@ -137,7 +138,8 @@ void showMenu() {       // This function simply shows the menu of actions that t
     std::cout << "Choice: ";
 };
 
-void handleMenu(int customerChoice, Customer& customer1, bool& isAccountCreated) {     // This function basically handles the user's input and executes accordingly.
+// This function basically handles the user's input and executes accordingly.
+void handleMenu(int customerChoice, Customer& customer1, bool& isAccountCreated) {    
     switch (customerChoice) {
         case 1:
             customer1.createAccount(isAccountCreated);
@@ -165,10 +167,13 @@ int main() {
     Customer customer1(empty, 0, empty, empty);
 
     do {
-        showMenu();        // Calls the showMenu function
-        std::cin >> customerChoice;     // The user's input is stored inside of this variable and then
-        handleMenu(customerChoice, customer1, isAccountCreated);     // the user is redirected inside the handleMenu function
-    } while (customerChoice != 0);      // All of the above happen unless this variable takes the 0 value
+        // Calls the showMenu function
+        showMenu();        
+        // The user's input is stored inside of this variable and then
+        std::cin >> customerChoice;    
+        // the user is redirected inside the handleMenu function
+        handleMenu(customerChoice, customer1, isAccountCreated);     
+    } while (customerChoice != 0);      
 
     return 0;
 }
