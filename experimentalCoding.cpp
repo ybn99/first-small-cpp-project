@@ -9,30 +9,36 @@ class Customer {
         std::string fullName;
         std::string email;
         std::string password;
+        std::string getAge;
         double balance = 0.0;
         int depositAmount = 0;             
-        int age = 0;
         int withdrawAmount = 0;
         int result = 0;
 
     public:
 
-    Customer(std::string& fn, int a, std::string& ml, std::string& pass) : fullName(fn), age(a), password(pass), email(ml) {}
+    Customer() : fullName(""), email(""), password(""), balance(0.0), 
+                depositAmount(0), withdrawAmount(0), result(0), getAge("") {}
 
     void createAccount(bool& isAccountCreated) {
-        std::cout << "\n=== CREATING NEW ACCOUNT ===\n";
-        std::cout << "\nYour FULL NAME: ";
-        std::cin.ignore();
-        std::getline(std::cin, fullName);
-        do{
-        std::cout << "Your AGE (only 18+): ";
-        std::cin >> age;
-        }while (age < 18);
-        std::cout << "Your E-MAIL: ";
-        std::cin >> email;
-        std::cout << "Your NEW PASSWORD: ";
-        std::cin >> password;
-        isAccountCreated = true;
+        
+        std::cout << "\nAre you an adult? (Yes or No): ";
+        std::cin >> getAge;
+        if (getAge != "Yes" && getAge != "yes") {
+            std::cout << "\nYou are not old enough to procceed. Please try again.";
+            return;
+        } else {
+            std::cout << "\n=== CREATING NEW ACCOUNT ===\n";
+            std::cout << "\nFull Name: ";
+            std::cin.ignore();
+            std::getline(std::cin, fullName);
+            std::cout << "Email: ";
+            std::cin >> email;
+            std::cout << "Set a Password: ";
+            std::cin >> password;
+            isAccountCreated = true;
+        }
+        
     }
 
     void viewAccount(bool& isAccountCreated) {      
@@ -41,7 +47,7 @@ class Customer {
         } else {
             std::cout << "\n=== YOUR ACCOUNT ===";
             std::cout << "\n1. Your FULL NAME: " << Customer::fullName;
-            std::cout << "\n2. Your E-MAIL: " << Customer::email;
+            std::cout << "\n2. Your EMAIL: " << Customer::email;
             std::cout << "\n3. Your BALANCE: $" << Customer::balance;
         }
     }
@@ -163,8 +169,7 @@ void handleMenu(int customerChoice, Customer& customer1, bool& isAccountCreated)
 int main() {
     int customerChoice = 0;
     bool isAccountCreated = false;
-    std::string empty = "";
-    Customer customer1(empty, 0, empty, empty);
+    Customer customer1;
 
     do {
         // Calls the showMenu function
