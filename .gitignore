@@ -7,7 +7,6 @@
 *.so
 *.dll
 a.out
-experimentalCoding
 neoProject
 *.dSYM/
 *.pdb
