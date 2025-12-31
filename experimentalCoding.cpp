@@ -4,16 +4,16 @@
 
 class Customer {
     private:
-        std::vector<int> depositHistory;
-        std::vector<int> withdrawHistory;
+        std::vector<double> depositHistory;
+        std::vector<double> withdrawHistory;
         std::string fullName;
         std::string email;
         std::string password;
         std::string isAdult;
         double balance = 0.0;
-        int depositAmount = 0;             
-        int withdrawAmount = 0;
-        int result = 0;
+        double depositAmount = 0.0;             
+        double withdrawAmount = 0.0;
+        double result = 0.0;
 
     public:
 
@@ -63,7 +63,7 @@ class Customer {
         }
     }
 
-    void getDepositAmount(bool& isAccountCreated) {
+    void customerDeposit(bool& isAccountCreated) {
         if (!isAccountCreated) {
             notCreatedAccount();
         } else {
@@ -72,20 +72,15 @@ class Customer {
         std::cout << "\nNew balance: $" << (balance += depositAmount);
         depositHistory.push_back(depositAmount);
         }
-    }
-
-    
-
-    void getWithdrawAmountFunc(bool& isAccountCreated) {        
-        if (!isAccountCreated) {
-            notCreatedAccount();
-        } else if (isAccountCreated && balance > 10){
-            std::cout << "\nHow much would you like to withdraw?: $";
-            std::cin >> withdrawAmount;
-            withdrawFromBalance();
+}
+    // Grabs the customer's desirable amount for withdrawal
+    void getCustomerWithdrawAmount() {
+        if (!balance) {
+            std::cout << "\nPlease deposit first.";
         } else {
-            std::cout << "\nUnable to withdraw. Balance is too low (min. $10+).";
-        } 
+        std::cout << "\nHow much would you like to withdraw?: $";
+        customerWithdraw();
+    }
 }
 
     void viewWithdrawHistory() const{        
@@ -94,19 +89,20 @@ class Customer {
         } else {
             std::cout << '\n';
             for (int withdrawTimes : withdrawHistory) {
-            std::cout << "Withdrawn: $" << withdrawTimes << '\n';
+            std::cout << "Money Withdrawn: $" << withdrawTimes << '\n';
             }
         }
     }
+
     // Withdraws funds from balance.
-    void withdrawFromBalance(){         
+    void customerWithdraw(){     
+        std::cin >> withdrawAmount;
         if (withdrawAmount > balance) {
-            std::cout << "\nWithdraw is bigger than the balance, no changes made.";
-            withdrawAmount = 0;
+            std::cout << "\nInvalid amount, your balance remains at: $" << balance;
         } else {
             (result = (balance -= withdrawAmount));
             withdrawHistory.push_back(withdrawAmount);
-            std::cout << "New balance: $" << result;
+            std::cout << "New balance: $" << result;  
         }
     }   
     
@@ -139,7 +135,7 @@ void handleMenu(int customerChoice, Customer& customer1, bool& isAccountCreated)
             customer1.viewAccount(isAccountCreated);
             break;
         case 3:
-            customer1.getDepositAmount(isAccountCreated);
+            customer1.customerDeposit(isAccountCreated);
             break;
         case 4: if (!isAccountCreated) {
             customer1.notCreatedAccount();
@@ -147,7 +143,12 @@ void handleMenu(int customerChoice, Customer& customer1, bool& isAccountCreated)
                 customer1.viewDepositHistory();
             }
             break;
-        case 5: customer1.getWithdrawAmountFunc(isAccountCreated);
+        case 5: if (!isAccountCreated) {
+            customer1.notCreatedAccount();
+            }
+            else {
+                customer1.getCustomerWithdrawAmount();
+            }
             break;
         case 6: if (!isAccountCreated) {
             customer1.notCreatedAccount();
