@@ -73,7 +73,7 @@ class Customer {
         depositHistory.push_back(depositAmount);
         }
 }
-    // Grabs the customer's desirable amount for withdrawal
+    // checks balance once called (balance ≠ 0 in order to withdraw) and then redirects to withdraw function
     void getCustomerWithdrawAmount() {
         if (!balance) {
             std::cout << "\nPlease deposit first.";
@@ -94,7 +94,6 @@ class Customer {
         }
     }
 
-    // Withdraws funds from balance.
     void customerWithdraw(){     
         std::cin >> withdrawAmount;
         if (withdrawAmount > balance) {
@@ -106,13 +105,13 @@ class Customer {
         }
     }   
     
-    // Used oftenly for when the customer has not made an account.
+    // a function for 
     void notCreatedAccount() {      
         std::cout << "\nYou have not created an account.";
     }
 };
 
-// This function simply shows the menu of actions that the user can make
+// the menu where the user types a number according to the action they want to take place
 void showMenu() {       
     std::cout << "\n\n=== MAIN MENU ===\n";
     std::cout << "1. Create Account.\n";
@@ -125,7 +124,7 @@ void showMenu() {
     std::cout << "Choice: ";
 };
 
-// This function basically handles the user's input and executes accordingly.
+// handles the customer's input and executes according action
 void handleMenu(int customerChoice, Customer& customer1, bool& isAccountCreated) {    
     switch (customerChoice) {
         case 1:
@@ -166,9 +165,7 @@ int main() {
     Customer customer1;
 
     do {
-        // Calls the showMenu function
         showMenu();        
-        // The user's input is stored inside of this variable and then
         std::cin >> customerChoice;    
         // the user is redirected inside the handleMenu function
         handleMenu(customerChoice, customer1, isAccountCreated);     
