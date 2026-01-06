@@ -81,7 +81,7 @@ class Customer {
             std::cout << "\nNo deposits have been made.";
         } else {
         std::cout << '\n';
-        for (int depositTimes : depositHistory) {
+        for (double depositTimes : depositHistory) {
             std::cout << "Deposited: $" << depositTimes << '\n';
             }
         }
@@ -114,7 +114,7 @@ class Customer {
             std::cout << "\nNo withdraws have been made.";
         } else {
             std::cout << '\n';
-            for (int withdrawTimes : withdrawHistory) {
+            for (double withdrawTimes : withdrawHistory) {
             std::cout << "Money Withdrawn: $" << withdrawTimes << '\n';
             }
         }
