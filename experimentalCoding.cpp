@@ -5,7 +5,7 @@
 class Customer {
     private:
         std::vector<double> depositHistory;
-        std::vector<double> withdrawHistory;
+        std::vector<double> withdrawHistory;  
         std::string fullName;
         std::string email;
         std::string password;
@@ -15,8 +15,8 @@ class Customer {
         double withdrawAmount = 0.0;
         double result = 0.0;
 
+    // Accounts Section
     public:
-
     Customer() : fullName(""), email(""), password(""), balance(0.0), 
                 depositAmount(0), withdrawAmount(0), result(0), isAdult("") {}
 
@@ -38,7 +38,6 @@ class Customer {
             std::cin >> password;
             isAccountCreated = true;
         }
-        
     }
 
     void viewAccount(bool& isAccountCreated) {      
@@ -52,6 +51,38 @@ class Customer {
         }
     }
 
+    void removeAccount(){
+        std::cout << "This is a message";
+        fullName = "";
+        email =  "";
+        password = "";
+        isAdult = "";
+        balance = 0.0;
+        withdrawAmount = 0.0;
+        depositAmount = 0.0;
+    }
+
+    void accountRemovalChoice(){
+        std::string wantToDelete;
+    
+        std::cout << "\nWant to remove your account?: ";
+        std::cin >> wantToDelete;
+        if (wantToDelete == "Yes" || wantToDelete == "yes"){
+            std::cout << "\nYour account is being deleted...";
+            removeAccount();
+        } else if (wantToDelete == "No" || wantToDelete == "no"){
+            std::cout << "\nYour account has not been deleted. Returning to main menu...";
+        } else {
+        std::cout << "\nInvalid input, try again.";
+        }
+    }
+
+    void notCreatedAccount() {      
+        std::cout << "\nYou have not created an account.";
+    }
+
+    // Deposit Section
+    public:
     void viewDepositHistory() const{
         if (depositHistory.empty()) {
             std::cout << "\nNo deposits have been made.";
@@ -73,6 +104,8 @@ class Customer {
         depositHistory.push_back(depositAmount);
         }
 }
+    // Withdraw Section
+    public:
     // checks balance once called (balance ≠ 0 in order to withdraw) and then redirects to withdraw function
     void getCustomerWithdrawAmount() {
         if (!balance) {
@@ -103,11 +136,6 @@ class Customer {
             withdrawHistory.push_back(withdrawAmount);
             std::cout << "New balance: $" << result;  
         }
-    }   
-    
-    // a function for 
-    void notCreatedAccount() {      
-        std::cout << "\nYou have not created an account.";
     }
 };
 
@@ -120,6 +148,7 @@ void showMenu() {
     std::cout << "4. View Deposit History.\n";
     std::cout << "5. Withdraw.\n";
     std::cout << "6. View Withdraw History.\n";
+    std::cout << "7. Delete Account.\n";
     std::cout << "0. Exit.\n";
     std::cout << "Choice: ";
 };
@@ -154,6 +183,12 @@ void handleMenu(int customerChoice, Customer& customer1, bool& isAccountCreated)
             } else {
                 customer1.viewWithdrawHistory();
             }
+            break;
+        case 7: if (!isAccountCreated) {
+            std::cout << "\nNo account exists to delete.";
+        } else {
+            customer1.accountRemovalChoice();
+        }
             break;
         case 0: std::exit(0);
     };
