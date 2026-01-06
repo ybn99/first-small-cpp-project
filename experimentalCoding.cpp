@@ -10,6 +10,7 @@ class Customer {
         std::string email;
         std::string password;
         std::string isAdult;
+        std::string wantToDelete;
         double balance = 0.0;
         double depositAmount = 0.0;             
         double withdrawAmount = 0.0;
@@ -52,26 +53,18 @@ class Customer {
     }
 
     void removeAccount(){
-        std::cout << "This is a message";
-        fullName = "";
-        email =  "";
-        password = "";
-        isAdult = "";
-        balance = 0.0;
-        withdrawAmount = 0.0;
-        depositAmount = 0.0;
+        Customer customer1;
+        std::cout << "\nYour account has been deleted successfully.";
     }
 
-    void accountRemovalChoice(){
-        std::string wantToDelete;
-    
-        std::cout << "\nWant to remove your account?: ";
+    void accountRemovalChoice(bool& isAccountCreated){
+        std::cout << "\nDo you want to delete your account? This action CANNOT be reverted.: ";
         std::cin >> wantToDelete;
         if (wantToDelete == "Yes" || wantToDelete == "yes"){
-            std::cout << "\nYour account is being deleted...";
+            isAccountCreated = false;
             removeAccount();
         } else if (wantToDelete == "No" || wantToDelete == "no"){
-            std::cout << "\nYour account has not been deleted. Returning to main menu...";
+            std::cout << "\nYour account has not been deleted. Returning to main menu.";
         } else {
         std::cout << "\nInvalid input, try again.";
         }
@@ -187,8 +180,8 @@ void handleMenu(int customerChoice, Customer& customer1, bool& isAccountCreated)
         case 7: if (!isAccountCreated) {
             std::cout << "\nNo account exists to delete.";
         } else {
-            customer1.accountRemovalChoice();
-        }
+            customer1.accountRemovalChoice(isAccountCreated);
+            }   
             break;
         case 0: std::exit(0);
     };
