@@ -21,27 +21,27 @@ class Customer {
     Customer() : fullName(""), email(""), password(""), balance(0.0), 
                 depositAmount(0), withdrawAmount(0), result(0), isAdult("") {}
 
-    void createAccount(bool& isAccountCreated) {
-        
-        std::cout << "\nAre you an adult? (Yes or No): ";
-        std::cin >> isAdult;
-        if (isAdult != "Yes" && isAdult != "yes") {
-            std::cout << "\nYou are not old enough to procceed. Please try again.";
-            return;
-        } else {
-            std::cout << "\n=== CREATING NEW ACCOUNT ===\n";
-            std::cout << "\nFull Name: ";
-            std::cin.ignore();
-            std::getline(std::cin, fullName);
-            std::cout << "Email: ";
-            std::cin >> email;
-            std::cout << "Set a Password: ";
-            std::cin >> password;
-            isAccountCreated = true;
-        }
+        void createAccount(bool& isAccountCreated) {
+
+            std::cout << "\nAre you an adult? (Yes or No): ";
+            std::cin >> isAdult;
+            if (isAdult != "Yes" && isAdult != "yes") {
+                std::cout << "\nYou are not old enough to procceed. Please try again.";
+                return;
+            } else {
+                std::cout << "\n=== CREATING NEW ACCOUNT ===\n";
+                std::cout << "\nFull Name: ";
+                std::cin.ignore();
+                std::getline(std::cin, fullName);
+                std::cout << "Email: ";
+                std::cin >> email;
+                std::cout << "Set a Password: ";
+                std::cin >> password;
+                isAccountCreated = true;
+            }
     }
 
-    void viewAccount(bool& isAccountCreated) {      
+       void viewAccount(bool& isAccountCreated) {      
         if (!isAccountCreated) {
             notCreatedAccount();
         } else {
@@ -125,9 +125,9 @@ class Customer {
         if (withdrawAmount > balance) {
             std::cout << "\nInvalid amount, your balance remains at: $" << balance;
         } else {
-            (result = (balance -= withdrawAmount));
+            balance -= withdrawAmount;
             withdrawHistory.push_back(withdrawAmount);
-            std::cout << "New balance: $" << result;  
+            std::cout << "New balance: $" << balance;  
         }
     }
 };
@@ -201,4 +201,3 @@ int main() {
 
     return 0;
 }
-
