@@ -18,6 +18,8 @@ class Customer {
 
     // Accounts Section
     public:
+    bool hasUpper, hasNumber = false;
+
     Customer() : fullName(""), email(""), password(""), balance(0.0), 
                 depositAmount(0), withdrawAmount(0), result(0), isAdult("") {}
 
@@ -35,10 +37,32 @@ class Customer {
                 std::getline(std::cin, fullName);
                 std::cout << "Email: ";
                 std::cin >> email;
-                std::cout << "Set a Password: ";
+                std::cout << "Create a Password: ";
                 std::cin >> password;
-                isAccountCreated = true;
+
+                if (createPassword(password)) {
+                    std::cout << "\nPassword accepted!" << std::endl;
+                    isAccountCreated = true;
+                } else {
+                    std::cout << "\nPassword is weak. (Requirements: 8+ characters, 1 capital letter and 1 number)" << std::endl;
+                    return;
+                }
             }
+    }
+
+
+       bool createPassword(std::string userP) {
+            if (userP.empty() || userP.length() < 8) {
+                std::cout << "\nEmpty...";
+                return false;
+            }
+
+            for (int i = 0; i < userP.length(); i++) {
+                if (isdigit(userP[i])) hasUpper = true;
+                if (isnumber(userP[i])) hasNumber = true;
+            }
+
+        return hasNumber && hasUpper;
     }
 
        void viewAccount(bool& isAccountCreated) {      
